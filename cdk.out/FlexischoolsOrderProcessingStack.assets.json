@@ -1,0 +1,52 @@
+{
+  "version": "52.0.0",
+  "files": {
+    "2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d": {
+      "displayName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Code",
+      "source": {
+        "path": "asset.2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "076686458098-ap-southeast-2-9c2c82ba": {
+          "bucketName": "cdk-hnb659fds-assets-076686458098-ap-southeast-2",
+          "objectKey": "2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d.zip",
+          "region": "ap-southeast-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::076686458098:role/cdk-hnb659fds-file-publishing-role-076686458098-ap-southeast-2"
+        }
+      }
+    },
+    "672467f4044e37367ec8aed63721eb8e0a46df8faa96187ffb5047974d602d3f": {
+      "displayName": "FlexischoolsOrderProcessingStack Template",
+      "source": {
+        "path": "FlexischoolsOrderProcessingStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "076686458098-ap-southeast-2-9bd95079": {
+          "bucketName": "cdk-hnb659fds-assets-076686458098-ap-southeast-2",
+          "objectKey": "672467f4044e37367ec8aed63721eb8e0a46df8faa96187ffb5047974d602d3f.json",
+          "region": "ap-southeast-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::076686458098:role/cdk-hnb659fds-file-publishing-role-076686458098-ap-southeast-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {
+    "da60f05f44a771ce0ae9065aa71dce464875294e84a263e1ede1260bef30b94d": {
+      "displayName": "OrderServiceImage",
+      "source": {
+        "directory": "asset.da60f05f44a771ce0ae9065aa71dce464875294e84a263e1ede1260bef30b94d",
+        "platform": "linux/amd64"
+      },
+      "destinations": {
+        "076686458098-ap-southeast-2-ecc41f22": {
+          "repositoryName": "cdk-hnb659fds-container-assets-076686458098-ap-southeast-2",
+          "imageTag": "da60f05f44a771ce0ae9065aa71dce464875294e84a263e1ede1260bef30b94d",
+          "region": "ap-southeast-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::076686458098:role/cdk-hnb659fds-image-publishing-role-076686458098-ap-southeast-2"
+        }
+      }
+    }
+  }
+}
