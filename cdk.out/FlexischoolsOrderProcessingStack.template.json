@@ -1,0 +1,1811 @@
+{
+ "Description": "Serverless order-processing platform with RDS PostgreSQL, ECS Fargate, SQS, and ALB",
+ "Resources": {
+  "OrderProcessingVpc78F94A33": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.20.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/Resource"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet1Subnet145B25E9": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-southeast-2a",
+    "CidrBlock": "10.20.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1/Subnet"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet1RouteTable7B74D1AD": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1/RouteTable"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet1RouteTableAssociation582CA64D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcpublicSubnet1RouteTable7B74D1AD"
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcpublicSubnet1Subnet145B25E9"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1/RouteTableAssociation"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet1DefaultRouteE0AFC362": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "OrderProcessingVpcIGW99379DD7"
+    },
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcpublicSubnet1RouteTable7B74D1AD"
+    }
+   },
+   "DependsOn": [
+    "OrderProcessingVpcVPCGWCE390D33"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1/DefaultRoute"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet1EIP43E335E5": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1/EIP"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet1NATGateway91848FB3": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "OrderProcessingVpcpublicSubnet1EIP43E335E5",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcpublicSubnet1Subnet145B25E9"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "OrderProcessingVpcpublicSubnet1DefaultRouteE0AFC362",
+    "OrderProcessingVpcpublicSubnet1RouteTableAssociation582CA64D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet1/NATGateway"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet2SubnetB293B413": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-southeast-2b",
+    "CidrBlock": "10.20.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet2/Subnet"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet2RouteTable1F9DAA2C": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet2/RouteTable"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet2RouteTableAssociationC3BDD4F7": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcpublicSubnet2RouteTable1F9DAA2C"
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcpublicSubnet2SubnetB293B413"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet2/RouteTableAssociation"
+   }
+  },
+  "OrderProcessingVpcpublicSubnet2DefaultRoute8F7C436D": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "OrderProcessingVpcIGW99379DD7"
+    },
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcpublicSubnet2RouteTable1F9DAA2C"
+    }
+   },
+   "DependsOn": [
+    "OrderProcessingVpcVPCGWCE390D33"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/publicSubnet2/DefaultRoute"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet1Subnet85327DC7": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-southeast-2a",
+    "CidrBlock": "10.20.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "private-app"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet1/Subnet"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet1RouteTableB415827C": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet1/RouteTable"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet1RouteTableAssociationAE3BB727": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcprivateappSubnet1RouteTableB415827C"
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcprivateappSubnet1Subnet85327DC7"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet1/RouteTableAssociation"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet1DefaultRouteD401E100": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "OrderProcessingVpcpublicSubnet1NATGateway91848FB3"
+    },
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcprivateappSubnet1RouteTableB415827C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet1/DefaultRoute"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet2Subnet1DAA089F": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-southeast-2b",
+    "CidrBlock": "10.20.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "private-app"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet2/Subnet"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet2RouteTableA3AE7489": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet2/RouteTable"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet2RouteTableAssociation39BA6C59": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcprivateappSubnet2RouteTableA3AE7489"
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcprivateappSubnet2Subnet1DAA089F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet2/RouteTableAssociation"
+   }
+  },
+  "OrderProcessingVpcprivateappSubnet2DefaultRoute52516F45": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "OrderProcessingVpcpublicSubnet1NATGateway91848FB3"
+    },
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcprivateappSubnet2RouteTableA3AE7489"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-appSubnet2/DefaultRoute"
+   }
+  },
+  "OrderProcessingVpcprivatedbSubnet1SubnetEA7E0D5B": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-southeast-2a",
+    "CidrBlock": "10.20.4.0/28",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "private-db"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet1/Subnet"
+   }
+  },
+  "OrderProcessingVpcprivatedbSubnet1RouteTable7A863683": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet1/RouteTable"
+   }
+  },
+  "OrderProcessingVpcprivatedbSubnet1RouteTableAssociation162BAF0E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcprivatedbSubnet1RouteTable7A863683"
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcprivatedbSubnet1SubnetEA7E0D5B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet1/RouteTableAssociation"
+   }
+  },
+  "OrderProcessingVpcprivatedbSubnet2SubnetC9533177": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-southeast-2b",
+    "CidrBlock": "10.20.4.16/28",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "private-db"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet2/Subnet"
+   }
+  },
+  "OrderProcessingVpcprivatedbSubnet2RouteTableA7E00D26": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet2/RouteTable"
+   }
+  },
+  "OrderProcessingVpcprivatedbSubnet2RouteTableAssociation9D9B31A3": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OrderProcessingVpcprivatedbSubnet2RouteTableA7E00D26"
+    },
+    "SubnetId": {
+     "Ref": "OrderProcessingVpcprivatedbSubnet2SubnetC9533177"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/private-dbSubnet2/RouteTableAssociation"
+   }
+  },
+  "OrderProcessingVpcIGW99379DD7": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "FlexischoolsOrderProcessingStack/OrderProcessingVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/IGW"
+   }
+  },
+  "OrderProcessingVpcVPCGWCE390D33": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "OrderProcessingVpcIGW99379DD7"
+    },
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingVpc/VPCGW"
+   }
+  },
+  "DbSecurityGroupE9D701AD": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for PostgreSQL database",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/DbSecurityGroup/Resource"
+   }
+  },
+  "DbSecurityGroupfromFlexischoolsOrderProcessingStackOrderServiceSecurityGroupF303A0EDIndirectPort071026A4": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow ECS service to access PostgreSQL",
+    "FromPort": {
+     "Fn::GetAtt": [
+      "OrderProcessingDatabase08847AED",
+      "Endpoint.Port"
+     ]
+    },
+    "GroupId": {
+     "Fn::GetAtt": [
+      "DbSecurityGroupE9D701AD",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "OrderServiceSecurityGroup2B05C1A0",
+      "GroupId"
+     ]
+    },
+    "ToPort": {
+     "Fn::GetAtt": [
+      "OrderProcessingDatabase08847AED",
+      "Endpoint.Port"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/DbSecurityGroup/from FlexischoolsOrderProcessingStackOrderServiceSecurityGroupF303A0ED:{IndirectPort}"
+   }
+  },
+  "DbCredentialsSecret4110FA1D": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "Credentials for the order processing PostgreSQL database",
+    "GenerateSecretString": {
+     "ExcludePunctuation": true,
+     "GenerateStringKey": "password",
+     "IncludeSpace": false,
+     "SecretStringTemplate": "{\"username\":\"postgres\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/DbCredentialsSecret/Resource"
+   }
+  },
+  "DbCredentialsSecretAttachment3AE5624A": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "DbCredentialsSecret4110FA1D"
+    },
+    "TargetId": {
+     "Ref": "OrderProcessingDatabase08847AED"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/DbCredentialsSecret/Attachment/Resource"
+   }
+  },
+  "PostgresParameterGroupC21E742E": {
+   "Type": "AWS::RDS::DBParameterGroup",
+   "Properties": {
+    "Description": "Parameter group for postgres16",
+    "Family": "postgres16",
+    "Parameters": {
+     "log_connections": "1",
+     "log_disconnections": "1",
+     "log_statement": "ddl",
+     "log_min_duration_statement": "500"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/PostgresParameterGroup/Resource"
+   }
+  },
+  "OrderProcessingDatabaseSubnetGroupCE50CD99": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for OrderProcessingDatabase database",
+    "SubnetIds": [
+     {
+      "Ref": "OrderProcessingVpcprivatedbSubnet1SubnetEA7E0D5B"
+     },
+     {
+      "Ref": "OrderProcessingVpcprivatedbSubnet2SubnetC9533177"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingDatabase/SubnetGroup/Default"
+   }
+  },
+  "OrderProcessingDatabaseMonitoringRole1C0070D0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "monitoring.rds.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingDatabase/MonitoringRole/Resource"
+   }
+  },
+  "OrderProcessingDatabase08847AED": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "AutoMinorVersionUpgrade": true,
+    "BackupRetentionPeriod": 0,
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t4g.micro",
+    "DBName": "ordersdb",
+    "DBParameterGroupName": {
+     "Ref": "PostgresParameterGroupC21E742E"
+    },
+    "DBSubnetGroupName": {
+     "Ref": "OrderProcessingDatabaseSubnetGroupCE50CD99"
+    },
+    "DeleteAutomatedBackups": true,
+    "DeletionProtection": false,
+    "EnableCloudwatchLogsExports": [
+     "postgresql"
+    ],
+    "Engine": "postgres",
+    "EngineVersion": "16",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DbCredentialsSecret4110FA1D"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DbCredentialsSecret4110FA1D"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "MaxAllocatedStorage": 50,
+    "MonitoringInterval": 60,
+    "MonitoringRoleArn": {
+     "Fn::GetAtt": [
+      "OrderProcessingDatabaseMonitoringRole1C0070D0",
+      "Arn"
+     ]
+    },
+    "MultiAZ": false,
+    "PubliclyAccessible": false,
+    "StorageEncrypted": true,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "DbSecurityGroupE9D701AD",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingDatabase/Resource"
+   }
+  },
+  "OrderProcessingDatabaseLogRetentionpostgresql16E263C7": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/rds/instance/",
+       {
+        "Ref": "OrderProcessingDatabase08847AED"
+       },
+       "/postgresql"
+      ]
+     ]
+    },
+    "RetentionInDays": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingDatabase/LogRetentionpostgresql/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:DeleteRetentionPolicy",
+        "logs:PutRetentionPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "Roles": [
+     {
+      "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Handler": "index.handler",
+    "Runtime": "nodejs22.x",
+    "Timeout": 900,
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-076686458098-ap-southeast-2",
+     "S3Key": "2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource",
+    "aws:asset:path": "asset.2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "OrderEventsDlq56EEDE37": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 1209600,
+    "SqsManagedSseEnabled": true
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderEventsDlq/Resource"
+   }
+  },
+  "OrderEventsQueue0AEFDDF5": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 345600,
+    "ReceiveMessageWaitTimeSeconds": 20,
+    "RedrivePolicy": {
+     "deadLetterTargetArn": {
+      "Fn::GetAtt": [
+       "OrderEventsDlq56EEDE37",
+       "Arn"
+      ]
+     },
+     "maxReceiveCount": 5
+    },
+    "SqsManagedSseEnabled": true,
+    "VisibilityTimeout": 120
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderEventsQueue/Resource"
+   }
+  },
+  "OrderProcessingClusterA3155346": {
+   "Type": "AWS::ECS::Cluster",
+   "Properties": {
+    "ClusterSettings": [
+     {
+      "Name": "containerInsights",
+      "Value": "enabled"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderProcessingCluster/Resource"
+   }
+  },
+  "OrderServiceTaskDefinitionTaskRole8394F7B4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderServiceTaskDefinition/TaskRole/Resource"
+   }
+  },
+  "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:ChangeMessageVisibility",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:ReceiveMessage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "OrderEventsQueue0AEFDDF5",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "DbCredentialsSecret4110FA1D"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "Roles": [
+     {
+      "Ref": "OrderServiceTaskDefinitionTaskRole8394F7B4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderServiceTaskDefinition/TaskRole/DefaultPolicy/Resource"
+   }
+  },
+  "OrderServiceTaskDefinition4FB72AB3": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "PORT",
+        "Value": "8080"
+       },
+       {
+        "Name": "AWS_REGION",
+        "Value": "ap-southeast-2"
+       },
+       {
+        "Name": "QUEUE_URL",
+        "Value": {
+         "Ref": "OrderEventsQueue0AEFDDF5"
+        }
+       },
+       {
+        "Name": "DB_HOST",
+        "Value": {
+         "Fn::GetAtt": [
+          "OrderProcessingDatabase08847AED",
+          "Endpoint.Address"
+         ]
+        }
+       },
+       {
+        "Name": "DB_PORT",
+        "Value": {
+         "Fn::GetAtt": [
+          "OrderProcessingDatabase08847AED",
+          "Endpoint.Port"
+         ]
+        }
+       },
+       {
+        "Name": "DB_NAME",
+        "Value": "ordersdb"
+       }
+      ],
+      "Essential": true,
+      "HealthCheck": {
+       "Command": [
+        "CMD-SHELL",
+        "wget -qO- http://localhost:8080/health || exit 1"
+       ],
+       "Interval": 30,
+       "Retries": 3,
+       "StartPeriod": 30,
+       "Timeout": 5
+      },
+      "Image": {
+       "Fn::Sub": "076686458098.dkr.ecr.ap-southeast-2.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-076686458098-ap-southeast-2:000130874bfa31ced3666b79cae72c8cf8c16f486f5ce7a430db694dad3746c3"
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "OrderServiceLogGroup9E6CC346"
+        },
+        "awslogs-stream-prefix": "order-service",
+        "awslogs-region": "ap-southeast-2"
+       }
+      },
+      "Name": "OrderServiceContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 8080,
+        "Protocol": "tcp"
+       }
+      ],
+      "Secrets": [
+       {
+        "Name": "DB_USER",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Ref": "DbCredentialsSecret4110FA1D"
+           },
+           ":username::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_PASSWORD",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Ref": "DbCredentialsSecret4110FA1D"
+           },
+           ":password::"
+          ]
+         ]
+        }
+       }
+      ]
+     }
+    ],
+    "Cpu": "512",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "OrderServiceTaskDefinitionExecutionRoleB99966CC",
+      "Arn"
+     ]
+    },
+    "Family": "FlexischoolsOrderProcessingStackOrderServiceTaskDefinitionFB19A509",
+    "Memory": "1024",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "RuntimePlatform": {
+     "CpuArchitecture": "ARM64",
+     "OperatingSystemFamily": "LINUX"
+    },
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "OrderServiceTaskDefinitionTaskRole8394F7B4",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderServiceTaskDefinition/Resource"
+   }
+  },
+  "OrderServiceTaskDefinitionExecutionRoleB99966CC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderServiceTaskDefinition/ExecutionRole/Resource"
+   }
+  },
+  "OrderServiceTaskDefinitionExecutionRoleDefaultPolicy30305BE9": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":ecr:ap-southeast-2:076686458098:repository/cdk-hnb659fds-container-assets-076686458098-ap-southeast-2"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "OrderServiceLogGroup9E6CC346",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "DbCredentialsSecret4110FA1D"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OrderServiceTaskDefinitionExecutionRoleDefaultPolicy30305BE9",
+    "Roles": [
+     {
+      "Ref": "OrderServiceTaskDefinitionExecutionRoleB99966CC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderServiceTaskDefinition/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "OrderServiceLogGroup9E6CC346": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 30
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderServiceLogGroup/Resource"
+   }
+  },
+  "OrderServiceLB82808218": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "OrderServiceLBSecurityGroup9100CC20",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "OrderProcessingVpcpublicSubnet1Subnet145B25E9"
+     },
+     {
+      "Ref": "OrderProcessingVpcpublicSubnet2SubnetB293B413"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "OrderProcessingVpcpublicSubnet1DefaultRouteE0AFC362",
+    "OrderProcessingVpcpublicSubnet1RouteTableAssociation582CA64D",
+    "OrderProcessingVpcpublicSubnet2DefaultRoute8F7C436D",
+    "OrderProcessingVpcpublicSubnet2RouteTableAssociationC3BDD4F7"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/LB/Resource"
+   }
+  },
+  "OrderServiceLBSecurityGroup9100CC20": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB FlexischoolsOrderProcessingStackOrderServiceLB7030A4F1",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/LB/SecurityGroup/Resource"
+   }
+  },
+  "OrderServiceLBSecurityGrouptoFlexischoolsOrderProcessingStackOrderServiceSecurityGroupF303A0ED8080F88B1BC6": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "OrderServiceSecurityGroup2B05C1A0",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8080,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "OrderServiceLBSecurityGroup9100CC20",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8080
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/LB/SecurityGroup/to FlexischoolsOrderProcessingStackOrderServiceSecurityGroupF303A0ED:8080"
+   }
+  },
+  "OrderServiceLBPublicListener14E8B9BF": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "OrderServiceLBPublicListenerECSGroup51CD35EA"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "OrderServiceLB82808218"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/LB/PublicListener/Resource"
+   }
+  },
+  "OrderServiceLBPublicListenerECSGroup51CD35EA": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckIntervalSeconds": 30,
+    "HealthCheckPath": "/health",
+    "HealthCheckTimeoutSeconds": 5,
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "OrderService62518D0B": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "OrderProcessingClusterA3155346"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "DeploymentCircuitBreaker": {
+      "Enable": true,
+      "Rollback": true
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DeploymentController": {
+     "Type": "ECS"
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "OrderServiceContainer",
+      "ContainerPort": 8080,
+      "TargetGroupArn": {
+       "Ref": "OrderServiceLBPublicListenerECSGroup51CD35EA"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "OrderServiceSecurityGroup2B05C1A0",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "OrderProcessingVpcprivateappSubnet1Subnet85327DC7"
+       },
+       {
+        "Ref": "OrderProcessingVpcprivateappSubnet2Subnet1DAA089F"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "OrderServiceTaskDefinition4FB72AB3"
+    }
+   },
+   "DependsOn": [
+    "OrderServiceLBPublicListenerECSGroup51CD35EA",
+    "OrderServiceLBPublicListener14E8B9BF",
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/Service"
+   }
+  },
+  "OrderServiceSecurityGroup2B05C1A0": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "FlexischoolsOrderProcessingStack/OrderService/Service/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OrderProcessingVpc78F94A33"
+    }
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/SecurityGroup/Resource"
+   }
+  },
+  "OrderServiceSecurityGroupfromFlexischoolsOrderProcessingStackOrderServiceLBSecurityGroupC73CD50E80806B65F9FF": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8080,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "OrderServiceSecurityGroup2B05C1A0",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "OrderServiceLBSecurityGroup9100CC20",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8080
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/SecurityGroup/from FlexischoolsOrderProcessingStackOrderServiceLBSecurityGroupC73CD50E:8080"
+   }
+  },
+  "OrderServiceTaskCountTarget341D73A6": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 6,
+    "MinCapacity": 2,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "service/",
+       {
+        "Ref": "OrderProcessingClusterA3155346"
+       },
+       "/",
+       {
+        "Fn::GetAtt": [
+         "OrderService62518D0B",
+         "Name"
+        ]
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::076686458098:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
+      ]
+     ]
+    },
+    "ScalableDimension": "ecs:service:DesiredCount",
+    "ServiceNamespace": "ecs"
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/TaskCount/Target/Resource"
+   }
+  },
+  "OrderServiceTaskCountTargetCpuScaling8E8174F2": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "FlexischoolsOrderProcessingStackOrderServiceTaskCountTargetCpuScaling5A6FE109",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "OrderServiceTaskCountTarget341D73A6"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "ECSServiceAverageCPUUtilization"
+     },
+     "ScaleInCooldown": 60,
+     "ScaleOutCooldown": 60,
+     "TargetValue": 60
+    }
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/TaskCount/Target/CpuScaling/Resource"
+   }
+  },
+  "OrderServiceTaskCountTargetQueueDepthScalingLowerPolicyAE60A456": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "FlexischoolsOrderProcessingStackOrderServiceTaskCountTargetQueueDepthScalingLowerPolicyB697D1FC",
+    "PolicyType": "StepScaling",
+    "ScalingTargetId": {
+     "Ref": "OrderServiceTaskCountTarget341D73A6"
+    },
+    "StepScalingPolicyConfiguration": {
+     "AdjustmentType": "ChangeInCapacity",
+     "Cooldown": 60,
+     "MetricAggregationType": "Average",
+     "StepAdjustments": [
+      {
+       "MetricIntervalLowerBound": -10,
+       "MetricIntervalUpperBound": 0,
+       "ScalingAdjustment": 1
+      },
+      {
+       "MetricIntervalUpperBound": -10,
+       "ScalingAdjustment": -1
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/TaskCount/Target/QueueDepthScaling/LowerPolicy/Resource"
+   }
+  },
+  "OrderServiceTaskCountTargetQueueDepthScalingLowerAlarm1F8F3431": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "OrderServiceTaskCountTargetQueueDepthScalingLowerPolicyAE60A456"
+     }
+    ],
+    "AlarmDescription": "Lower threshold scaling alarm",
+    "ComparisonOperator": "LessThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "QueueName",
+      "Value": {
+       "Fn::GetAtt": [
+        "OrderEventsQueue0AEFDDF5",
+        "QueueName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ApproximateNumberOfMessagesVisible",
+    "Namespace": "AWS/SQS",
+    "Period": 60,
+    "Statistic": "Average",
+    "Threshold": 10
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/TaskCount/Target/QueueDepthScaling/LowerAlarm/Resource"
+   }
+  },
+  "OrderServiceTaskCountTargetQueueDepthScalingUpperPolicy4B936D23": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "FlexischoolsOrderProcessingStackOrderServiceTaskCountTargetQueueDepthScalingUpperPolicyF154BF9D",
+    "PolicyType": "StepScaling",
+    "ScalingTargetId": {
+     "Ref": "OrderServiceTaskCountTarget341D73A6"
+    },
+    "StepScalingPolicyConfiguration": {
+     "AdjustmentType": "ChangeInCapacity",
+     "Cooldown": 60,
+     "MetricAggregationType": "Average",
+     "StepAdjustments": [
+      {
+       "MetricIntervalLowerBound": 0,
+       "MetricIntervalUpperBound": 40,
+       "ScalingAdjustment": 2
+      },
+      {
+       "MetricIntervalLowerBound": 40,
+       "ScalingAdjustment": 3
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/TaskCount/Target/QueueDepthScaling/UpperPolicy/Resource"
+   }
+  },
+  "OrderServiceTaskCountTargetQueueDepthScalingUpperAlarm0BB5BF59": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "OrderServiceTaskCountTargetQueueDepthScalingUpperPolicy4B936D23"
+     }
+    ],
+    "AlarmDescription": "Upper threshold scaling alarm",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "QueueName",
+      "Value": {
+       "Fn::GetAtt": [
+        "OrderEventsQueue0AEFDDF5",
+        "QueueName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ApproximateNumberOfMessagesVisible",
+    "Namespace": "AWS/SQS",
+    "Period": 60,
+    "Statistic": "Average",
+    "Threshold": 10
+   },
+   "DependsOn": [
+    "OrderServiceTaskDefinitionTaskRoleDefaultPolicy3A5A88A4",
+    "OrderServiceTaskDefinitionTaskRole8394F7B4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/OrderService/Service/TaskCount/Target/QueueDepthScaling/UpperAlarm/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31S227bMAz9lr6r2ubuB3LpigDFlsVBXwtGZlU1suSJVILA8L8PkhPbTbs98ejokKLIU8ji+538egNHulXV/taanWxLBrUXcKTnFlUh26dGicWLe1ovxDrurFFl3DnkxI1o4yPjFnYWR37kZkReGWDj3SBO4H61TuEn8AMwHuEk1sEcgHEsvHKMweEg6Ds5n2bMoF5rdCxKVDEYPj0EH5vcw3+JldMBiT7w95nuBKEKyFSDA41BtmU+n+UJ9WELQSNP2hgE1zedCBXJdg0BamQMQ1vL+RW3BIYdEK4cMTiFoh/GJOEDcZF2wkAt243v15Dj2luj8tx61AnrNcn20esNMrq8lEevh3IX3Am6ewYiZJKzFATdyXlUe+Q5EAr6Q7L9HTHmtzLoBCqS7cJGYgyJvsAfEDQkN9B+iS/GmYsXrhnvGIzDMOHOuSWGg1G9v86wVGCTv1KRhY9pyqjCpemlV3sMqxo09v2jCnKDjSfDPpzyJ1DRcwOcPEZy1jTWqGzTRw/VHGwaanX1PlogNsp6qHZZYZw+FLL9PDv0I52cpzpDjO6sueDJfW+iYTOTYydglEFkTwqscVq240ySOE/rPdOHbQC1N06Xfd7okvdEydj8k5mp9HonlPWxOgKrV9nOLIQ61cmg68QGycfQ723AeR8lgzZOp4tfkZvInXC+QvlGXw5FIYtCfrt5I2NuQ3RsapSbPv4F/8/jXbYEAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "FlexischoolsOrderProcessingStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "OrderServiceLoadBalancerDNSCF716D48": {
+   "Value": {
+    "Fn::GetAtt": [
+     "OrderServiceLB82808218",
+     "DNSName"
+    ]
+   }
+  },
+  "OrderServiceServiceURL70EA3C9C": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "OrderServiceLB82808218",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "AlbDnsName": {
+   "Description": "Public DNS name for the application load balancer",
+   "Value": {
+    "Fn::GetAtt": [
+     "OrderServiceLB82808218",
+     "DNSName"
+    ]
+   }
+  },
+  "QueueUrl": {
+   "Description": "Primary SQS queue for order events",
+   "Value": {
+    "Ref": "OrderEventsQueue0AEFDDF5"
+   }
+  },
+  "DatabaseEndpoint": {
+   "Description": "PostgreSQL endpoint",
+   "Value": {
+    "Fn::GetAtt": [
+     "OrderProcessingDatabase08847AED",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "DbSecretName": {
+   "Description": "Secrets Manager secret containing database credentials",
+   "Value": {
+    "Fn::Join": [
+     "-",
+     [
+      {
+       "Fn::Select": [
+        0,
+        {
+         "Fn::Split": [
+          "-",
+          {
+           "Fn::Select": [
+            6,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Ref": "DbCredentialsSecret4110FA1D"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "Fn::Select": [
+        1,
+        {
+         "Fn::Split": [
+          "-",
+          {
+           "Fn::Select": [
+            6,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Ref": "DbCredentialsSecret4110FA1D"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
